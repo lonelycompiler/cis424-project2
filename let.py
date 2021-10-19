@@ -1,3 +1,21 @@
+import sys
+# NEED TO IMPLEMENT:
+# functions: TERM(expr_type) TYPE()
+
+def lexan():
+    global mitr
+    try:
+        return next(mitr)
+    except StopIteration:
+        return ('')
+
+def match(ch):
+    global lookahead
+    if(ch == lookahead):
+        lookahead = lexan()
+    else:
+        print('Syntax Error')
+        exit()
 
 # type checking must be done to ensure lookahead is expr_type
 def BASE():
@@ -57,9 +75,32 @@ def PROG():
     while (lookahead == 'let'):
         LET_IN_END()
 
+
 def main():
+    global mitr
+    global lookahead
     global symbol_table
     symbol_table = {}
-    PROG()
+
+    # if a file argument isn't given, then return error
+    if(len(sys.argv) == 1):
+        print('Syntax Error: no file given')
+        exit()
+    
+    # open the file and do all the stuff while its opened here
+    # note:
+    # python3 official documenation explicitly says you must use with open to open files
+    # anyone who uses file.open() & file.close() is living in the python2 era
+    with open(sys.argv[1], 'r+') as f:
+
+        # create a list, then iterate over that list
+        wlist = f.read().split()
+        mitr = iter(wlist)
+        lookahead = next(mitr)
+        PROG()
+        if(lookahead == ''):
+            print('pass')
+        else:
+            print('Syntax Error')
 
 main()

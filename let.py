@@ -26,7 +26,7 @@
 import sys
 # NEED TO IMPLEMENT:
 # functions: TERM(expr_type) TYPE() FACTOR() DECLR_LIST()
-
+# clear dict after matching ;
 def lexan():
     global mitr
     try:
@@ -65,13 +65,9 @@ def LET_IN_END():
     symbol_table = {} #clear symbol_table at end of program
 
     
-    
-def DECL_LIST():
-    global lookahead
-    DECL()
-    match('{')
-    DECL()
-    match('}')
+   
+
+
     
 
     
@@ -87,20 +83,21 @@ def DECL():
     
   
     
-def TYPE():
-    
-    
+def TYPE(x):
+    if isinstance(v, int) == False and isinstance(v, real) == False: 
+        print("Type Error")
+        exit()
     
 def EXPR():
     v = TERM(expr_type)
-    while (lookahead == '+' or lookahead == 'i'):
+    while (lookahead == '+' or lookahead == '-'):
         if (lookahead == '+'):
             match('+')
             v += TERM(expr_type)
         else:
             match('-')
             v -= TERM(expr_type)
-          
+    return v
         
         
 def TERM():

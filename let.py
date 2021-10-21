@@ -70,7 +70,7 @@ def LET_IN_END():
 def DECL_LIST():
     global lookahead
     DECL()
-    while (lookahead == ''):
+    while (lookahead is not 'in'):
         DECL()
 
 
@@ -114,7 +114,9 @@ def EXPR():
         
         
 def TERM():
-    
+    FACTOR()
+    while lookahead == '*' or lookahead == '/':
+        FACTOR()
     
     
 def FACTOR():

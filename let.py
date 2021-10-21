@@ -44,8 +44,10 @@ def match(ch):
 
 def PROG():
     global lookahead
+    symbol_table = {} #clear symbol_table at end of program
     LET_IN_END()
     while (lookahead == 'let'):
+        symbol_table = {} #clear symbol_table at end of program
         LET_IN_END()
     
 
@@ -53,14 +55,16 @@ def LET_IN_END():
     global lookahead
     global symbol_table
     match('let')
-    typ = TYPE()
+    DECL_LIST()
+    match('in')
+    type = TYPE()
     match('(')
     value = EXPR()
     match(')')
-    print(value)
+    ######################################################################print(value)
     match('end')
     match(';')
-    symbol_table = {} #clear symbol_table at end of program
+
 
 
 def DECL_LIST():
@@ -85,11 +89,17 @@ def DECL():
     
   
     
-def TYPE(x):
-    if isinstance(v, int) == False and isinstance(v, real) == False: 
+def TYPE(v):
+    if isinstance(v, int):
+        return "int" 
+    elif isinstance(v, real):
+        return "real"
+    else:
         print("Type Error")
         exit()
     
+    
+
 def EXPR():
     v = TERM(expr_type)
     while (lookahead == '+' or lookahead == '-'):

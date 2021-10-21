@@ -42,7 +42,7 @@ def match(ch):
     if(ch == lookahead):
         lookahead = lexan()
     else:
-        print('Syntax Error')
+        print('Error')
         exit()
 
 def PROG():
@@ -87,7 +87,13 @@ def DECL():
     id = lookahead
     match(lookahead)
     match(':')
-    typ = TYPE(v)
+    temp = lookahead
+    match(lookahead)
+    match('=')
+    typ = TYPE(lookahead)
+    if typ is not temp:
+        print('Error')
+        exit()
     v = EXPR()
     match(';')
     symbol_table[id] = v
@@ -191,7 +197,7 @@ def main():
 
     # if a file argument isn't given, then return error
     if(len(sys.argv) == 1):
-        print('Syntax Error: no file given')
+        print('Error')
         exit()
     
     # open the file
@@ -205,6 +211,6 @@ def main():
         if(lookahead == ''):
             print('pass')
         else:
-            print('Syntax Error')
+            print('Error')
 
 main()

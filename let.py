@@ -80,6 +80,7 @@ def DECL_LIST():
 def DECL():
     global lookahead
     global symbol_table
+    global typ
     id = lookahead
     match(lookahead)
     match(':')

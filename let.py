@@ -1,4 +1,4 @@
-# Gopal 
+# Gopal Shukla
 # Benjamin Ward 2730444
 # CIS 424 Section 50
 # Prof. Sang

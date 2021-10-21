@@ -28,9 +28,7 @@
 
 import sys
 
-# NEED TO IMPLEMENT:
-# functions: TERM(expr_type) TYPE() FACTOR() DECLR_LIST()
-# clear dict after matching ;
+# This method tries to obtain the next mitr from the input file, if it fails it returns ''
 def lexan():
     global mitr
     try:
@@ -38,7 +36,8 @@ def lexan():
     except StopIteration:
         return ''
 
-
+# This method compares ch to the lookahead and if they are equal, it sets lookahead to 
+# the next iterable by calling lexan(). Otherwise, it prints error.
 def match(ch):
     global lookahead
     if(ch == lookahead):
@@ -47,13 +46,17 @@ def match(ch):
         print('Error')
         exit()
 
+# This method is the first one called when evaluating the grammar. It calls LET_IN_END() and 
+# then while lookahead is "let" it continues to call LET_IN_END()
 def PROG():
     global lookahead
     LET_IN_END()
     while lookahead == 'let':
         LET_IN_END()
-    
-
+   
+# This method matches 'let', calls DECL_LIST(), matches 'in', assigns typ to the type of the current lookahead, then
+# matches '(', and puts the result of the expression into the list of results of all programs for the input file (to be
+# displayed later in main), and finally matches the remaining terminals ')' 'end' ';', before clearing the symbol table.
 def LET_IN_END():
     global lookahead
     global symbol_table
@@ -71,14 +74,17 @@ def LET_IN_END():
     match(';')
     symbol_table = {} #clear symbol_table at end of program
 
-
+# This method calls DECL() amd while the lookahead is not 'in', it continues to call DECL().
+# We check if it matches 'in' or not because there may be multiple IDs defined with values.
 def DECL_LIST():
     global lookahead
     DECL()
     while lookahead != 'in':
         DECL()
 
-
+# This method sets the ID to lookahead, matches the ID and ':', then sets typ to the type of 
+# the current lookahead, maches '=', sets the symbol table's value for the ID to its expression,
+# and finally matches ';'.
 def DECL(): # x : int = 5
     global lookahead
     global symbol_table
@@ -101,7 +107,8 @@ def DECL(): # x : int = 5
     symbol_table[id] = EXPR()
     match(';')
     
-
+# This method returns the type of the passed arguement 'typ' as a string. It's etiher
+# real or int only for this language definition.
 def TYPE(typ):
     if typ == 'real':
         match('real')
@@ -115,7 +122,9 @@ def TYPE(typ):
         print('Error')
         exit()
 
-
+# This method sets v by calling TERM(), and while the lookahead is either + or -
+# it will match the + or - and then depending on the matched operand, add or subtract
+# the next TERM() from the current value of v.
 def EXPR():
     global lookahead
     v = TERM()
@@ -128,7 +137,9 @@ def EXPR():
             v -= TERM()
     return v
         
-        
+# This method sets v to FACTOR() and while the lookahead is either * or /
+# it sets the symbol to the lookahead, and depending on the vlaue of symbol,
+# it will either set v to v*FACTOR() or v/FACTOR(). Finally it returns v.
 def TERM():
     #match(lookahead)
     v = FACTOR()
@@ -141,7 +152,8 @@ def TERM():
             symbol /= FACTOR()
     return v
     
-# FACTOR function checks 
+# FACTOR function sets v to BASE() and if the lookahead is '^' it will match '^' and 
+# then set v to v raised to the power of FACTOR(). Finally, it returns v.
 def FACTOR():
     v = BASE()
     if lookahead == '^':
@@ -151,10 +163,8 @@ def FACTOR():
     return v
         
 
-# The BASE function will recursively call 
-# expr or type until an id from the symbol table or
-# a valid int/real number is given.
-# like so:
+# The BASE function will recursively call expr or type until an id from the symbol table or
+# a valid int/real number is given. Like shown below:
 # <base> ::= ( <expr> ) | id | number | <type> ( id )
 def BASE():
     #v = 0
@@ -200,9 +210,8 @@ def BASE():
     return v
 
 
-# this function reads an input file (sys.argv[1] must be given)
-# it then puts the input into an iterable list which the tiny
-# compiler runs on
+# this function reads an input file (sys.argv[1] must be given) it then puts 
+# the input into an iterable list which the tiny compiler runs on
 def main():
     global mitr
     global lookahead

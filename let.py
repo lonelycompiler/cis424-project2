@@ -27,7 +27,9 @@
 
 
 import sys
+import pprint
 import snoop
+
 # NEED TO IMPLEMENT:
 # functions: TERM(expr_type) TYPE() FACTOR() DECLR_LIST()
 # clear dict after matching ;
@@ -38,7 +40,7 @@ def lexan():
     except StopIteration:
         return ''
 
-@snoop(watch='lookahead', depth=2)
+@snoop(watch='lookahead', depth=1)
 def match(ch):
     global lookahead
     if(ch == lookahead):
@@ -47,7 +49,6 @@ def match(ch):
         print('Error')
         exit()
 
-@snoop(watch='lookahead', depth=2)
 def PROG():
     global lookahead
     symbol_table = {} #clear symbol_table at end of program
@@ -57,7 +58,6 @@ def PROG():
         LET_IN_END()
     
 
-@snoop(watch='lookahead', depth=2)
 def LET_IN_END():
     global lookahead
     global symbol_table
@@ -76,7 +76,6 @@ def LET_IN_END():
 
 
 
-@snoop(watch='lookahead', depth=2)
 def DECL_LIST():
     global lookahead
     DECL()
@@ -86,7 +85,7 @@ def DECL_LIST():
 
     
 
-@snoop(watch='lookahead', depth=3)
+@snoop(watch='lookahead', depth=1)
 def DECL(): # x : int = 5
     global lookahead
     global symbol_table
@@ -106,12 +105,12 @@ def DECL(): # x : int = 5
     match('=')
 
     # non-terminal <expr> which uses id
-    v = EXPR()
+    symbol_table[id] = lookahead
+    symbol_table[id] = EXPR()
     match(';')
-    symbol_table[id] = v
+    print(symbol_table)
     
-  
-@snoop(watch='lookahead', depth=2)
+
 def TYPE(typ):
     if typ == 'real':
         match('real')
@@ -163,14 +162,14 @@ def EXPR():
         
         
 def TERM():
-    match(lookahead)
+    #match(lookahead)
     FACTOR()
     while lookahead == '*' or lookahead == '/':
         match(lookahead)
         FACTOR()
     
     
-@snoop(watch='lookahead', depth=2)
+@snoop(watch='lookahead', depth=1)
 def FACTOR():
     #print(lookahead)
     BASE()
@@ -182,7 +181,7 @@ def FACTOR():
 
 # type checking must be done to ensure lookahead is expr_type
 
-@snoop(watch='lookahead', depth=2)
+@snoop(watch='lookahead', depth=1)
 def BASE():
     # ( <expr> )
     if lookahead == '(':
@@ -193,6 +192,7 @@ def BASE():
     # id
     elif lookahead[0].isalpha():
         if lookahead in symbol_table:
+            print(symbol_table)
             v = symbol_table[lookahead] # gets the value from the id
             
             """
@@ -230,6 +230,9 @@ def BASE():
             id = int(lookahead)
             match(')')
             v = id
+    else:
+        print('ERROR')
+        exit()
 
     match(lookahead)
     return v
@@ -246,10 +249,10 @@ def BASE():
     
     
     
-    
 
-@snoop(watch='lookahead', depth=2)
 def main():
+    print('\n'*40)
+
     global mitr
     global lookahead
     global symbol_table
@@ -268,10 +271,6 @@ def main():
         mitr = iter(wlist)
         lookahead = next(mitr)
         PROG()
-        if(lookahead == ''):
-            print('pass')
-        else:
-            print('hi')
-            print('Error')
+        pprint.pprint(symbol_table)
 
 main()

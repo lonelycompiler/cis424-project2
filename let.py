@@ -27,9 +27,7 @@
 
 
 import sys
-# NEED TO IMPLEMENT:
-# functions: TERM(expr_type) TYPE() FACTOR() DECLR_LIST()
-# clear dict after matching ;
+
 def lexan():
     global mitr
     try:
@@ -112,14 +110,14 @@ def TYPE(v):
     
 
 def EXPR():
-    v = TERM(expr_type)
+    v = TERM(typ)
     while lookahead == '+' or lookahead == '-':
         if lookahead == '+':
             match('+')
-            v += TERM(expr_type)
+            v += TERM(typ)
         else:
             match('-')
-            v -= TERM(expr_type)
+            v -= TERM(typ)
     return v
         
         
@@ -137,7 +135,7 @@ def FACTOR():
     else: pass
         
 
-# type checking must be done to ensure lookahead is expr_type
+# type checking must be done to ensure lookahead is typ
 def BASE():
     if lookahead == '(':
         match('(')
@@ -157,7 +155,7 @@ def BASE():
                     print('Error')
                     exit()
                 else: return v
-            else: print("Error") # If the expr_type is not int or real    
+            else: print("Error") # If the typ is not int or real    
 
     #first character of lookahead            
     elif lookahead[0].isdigit():

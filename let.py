@@ -87,7 +87,7 @@ def DECL():
     id = lookahead
     match(lookahead)
     match(':')
-    typ = TYPE()
+    typ = TYPE(v)
     v = EXPR()
     match(';')
     symbol_table[id] = v

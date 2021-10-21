@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/python3
 # Gopal Shukla
 # Benjamin Ward 2730444
 # CIS 424 Section 50

@@ -18,10 +18,13 @@
 # <term> ::= <factor> { * <factor> | / <factor> }
 # <factor> ::= <base> ^ <factor> | <base>
 # <base> ::= ( <expr> ) | id | number | <type> ( id )
-# terminal characters are space delimited and the input file name is given from cmd.
+#
+# terminal characters are space delimited and the input file name is given from cmd
 
 # #!/usr/bin/python3
 # chmod +x let.py
+# do not use eval() function!!
+
 
 import sys
 # NEED TO IMPLEMENT:
@@ -130,24 +133,11 @@ def FACTOR():
 
 # type checking must be done to ensure lookahead is expr_type
 def BASE():
-    #first character of lookahead
     if lookahead == '(':
         match('(')
         EXPR()
         match(')')
 
-    elif lookahead[0].isdigit():
-        v = int(lookahead)
-
-    elif '.' in lookahead:
-        v = float(lookahead)
-
-    elif lookahead == "int" or lookahead == "real":
-            TYPE()
-            match('(')
-            id = lookahead
-            match(')')
-        
     elif lookahead[0].isalpha():
         if lookahead in symbol_table:
             v = symbol_table[lookahead]
@@ -161,17 +151,24 @@ def BASE():
                     print('Error')
                     exit()
                 else: return v
-            else: print("Error") # If the expr_type is not int or real            
+            else: print("Error") # If the expr_type is not int or real    
 
+    #first character of lookahead            
+    elif lookahead[0].isdigit():
+        v = int(lookahead)
 
-                    
-    
-    
-    
-    
+    elif '.' in lookahead:
+        v = float(lookahead)
+
+    elif lookahead == "int" or lookahead == "real":
+            TYPE()
+            match('(')
+            id = lookahead
+            match(')')
+
     match(lookahead)
     return v
-    # do not use eval() function!!
+
 
 
 

@@ -194,7 +194,7 @@ def main():
     symbol_table = {}
 
     # if a file argument isn't given, then return error
-    if(len(sys.argv) == 1):
+    if(len(sys.argv) >= 1):
         print('Error')
         exit()
     

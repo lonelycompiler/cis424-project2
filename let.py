@@ -84,7 +84,7 @@ def main():
 
     # if a file argument isn't given, then return error
     if(len(sys.argv) == 1):
-        print('Syntax Error: no file given')
+        print('Syntax Error')
         exit()
     
     # open the file and do all the stuff while its opened here

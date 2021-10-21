@@ -17,9 +17,7 @@
 # <term> ::= <factor> { * <factor> | / <factor> }
 # <factor> ::= <base> ^ <factor> | <base>
 # <base> ::= ( <expr> ) | id | number | <type> ( id )
-
-
-
+# terminal characters are space delimited and the input file name is given from cmd.
 
 import sys
 # NEED TO IMPLEMENT:
@@ -40,6 +38,67 @@ def match(ch):
         print('Syntax Error')
         exit()
 
+def PROG():
+    global lookahead
+    LET_IN_END()
+    while (lookahead == 'let'):
+        LET_IN_END()
+
+def LET_IN_END():
+    global lookahead
+    global symbol_table
+    match('let')
+    typ = TYPE()
+    match('(')
+    value = EXPR()
+    match(')')
+    print(value)
+    match('end')
+    match(';')
+    symbol_table = {} #clear symbol_table at end of program
+
+    
+    
+def DECL-LIST():
+    
+
+    
+def DECL():
+    global lookahead
+    global symbol_table
+    id = lookahead
+    match(lookahead)
+    match(':')
+    typ = TYPE()
+    v = EXPR()
+    symbol_table[id] = v
+    
+  
+    
+def TYPE():
+    
+    
+    
+def EXPR():
+    v = TERM(expr_type)
+    while (lookahead == '+' or lookahead == 'i'):
+        if (lookahead == '+'):
+            match('+')
+            v += TERM(expr_type)
+        else:
+            match('-')
+            v -= TERM(expr_type)
+          
+        
+        
+def TERM():
+    
+    
+    
+def FACTOR():
+            
+
+
 # type checking must be done to ensure lookahead is expr_type
 def BASE():
     #first character of lookahead
@@ -59,45 +118,18 @@ def BASE():
     return v
     # do not use eval() function!!
 
-def EXPR():
-    v = TERM(expr_type)
-    while (lookahead == '+' or lookahead == 'i'):
-        if (lookahead == '+'):
-            match('+')
-            v += TERM(expr_type)
-        else:
-            match('-')
-            v -= TERM(expr_type)
 
-def DECLR():
-    global lookahead
-    global symbol_table
-    id = lookahead
-    match(lookahead)
-    match(':')
-    typ = TYPE()
-    v = EXPR()
-    symbol_table[id] = v
 
-def LET_IN_END():
-    global lookahead
-    global symbol_table
-    match('let')
-    typ = TYPE()
-    match('(')
-    value = EXPR()
-    match(')')
-    print(value)
-    match('end')
-    match(';')
-    symbol_table = {} #clear symbol_table at end of program
 
-def PROG():
-    global lookahead
-    LET_IN_END()
-    while (lookahead == 'let'):
-        LET_IN_END()
 
+
+
+
+
+    
+    
+    
+    
 
 def main():
     global mitr
@@ -110,10 +142,7 @@ def main():
         print('Syntax Error: no file given')
         exit()
     
-    # open the file and do all the stuff while its opened here
-    # note:
-    # python3 official documenation explicitly says you must use with open to open files
-    # anyone who uses file.open() & file.close() is living in the python2 era
+    # open the file
     with open(sys.argv[1], 'r+') as f:
 
         # create a list, then iterate over that list

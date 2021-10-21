@@ -10,7 +10,7 @@
 # and evaluate a simple strong-typed programming language (tiny). The language is defined below:
 # 
 # <prog> ::= <let-in-end> { <let-in-end> }
-# <let-in-end> ::= let <decl-list> in <type> ( <expr> ) end ;
+# <let-in-end> ::= let <decl-list> in <type>  (<expr> ) end ;
 # <decl-list> ::= <decl> { <decl> }
 # <decl> ::= id : <type> = <expr> ;
 # <type> ::= int | real
@@ -32,7 +32,7 @@ def lexan():
     try:
         return next(mitr)
     except StopIteration:
-        return ('')
+        return '')
 
 def match(ch):
     global lookahead
@@ -46,7 +46,7 @@ def PROG():
     global lookahead
     symbol_table = {} #clear symbol_table at end of program
     LET_IN_END()
-    while (lookahead == 'let'):
+    while lookahead == 'let'):
         symbol_table = {} #clear symbol_table at end of program
         LET_IN_END()
     
@@ -70,7 +70,7 @@ def LET_IN_END():
 def DECL_LIST():
     global lookahead
     DECL()
-    while (lookahead == ''):
+    while lookahead == ''):
         DECL()
 
 
@@ -103,8 +103,8 @@ def TYPE(v):
 
 def EXPR():
     v = TERM(expr_type)
-    while (lookahead == '+' or lookahead == '-'):
-        if (lookahead == '+'):
+    while lookahead == '+' or lookahead == '-'):
+        if lookahead == '+'):
             match('+')
             v += TERM(expr_type)
         else:
@@ -135,28 +135,27 @@ def BASE():
         EXPR()
         match(')')
 
-    elif (lookahead[0].isdigit()):
+    elif lookahead[0].isdigit()):
         v = int(lookahead)
 
-    elif ('.' in lookahead):
+    elif '.' in lookahead):
         v = float(lookahead)
 
-    elif:
-        if lookahead == "int" or lookahead == "real":
+    elif lookahead == "int" or lookahead == "real":
             TYPE()
             match('(')
             id = lookahead
             match(')')
         
-    elif (lookahead[0].isalpha()):
+    elif lookahead[0].isalpha()):
         if(lookahead in symbol_table):
             v = symbol_table[lookahead]
-            if (expr_type == 'int'):
+            if expr_type == 'int'):
                 if(isinstance(v, int) == False):
                     print('Error')
                     exit()
                 else: return v
-            elif (expr_type == 'real'):
+            elif expr_type == 'real'):
                 if(isinstance(v, real) == False):
                     print('Error')
                     exit()

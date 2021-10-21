@@ -150,7 +150,7 @@ def BASE():
     elif lookahead[0].isalpha():
         if lookahead in symbol_table:
             v = symbol_table[lookahead]
-            if expr_type == 'int':
+            if typ == 'int':
                 if isinstance(v, int) == False:
                     print('Error')
                     exit()

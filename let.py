@@ -1,6 +1,6 @@
 import sys
 # NEED TO IMPLEMENT:
-# functions: TERM(expr_type) TYPE()
+# functions: TERM(expr_type) TYPE() FACTOR() DECLR_LIST()
 
 def lexan():
     global mitr

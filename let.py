@@ -59,7 +59,11 @@ def LET_IN_END():
 
     
     
-def DECL-LIST():
+def DECL_LIST():
+    DECL()
+    match('{')
+    DECL()
+    match('}')
     
 
     

@@ -8,15 +8,15 @@
 # This project is an interpreter which uses the TDRD method and synthesized attributes to parse
 # and evaluate a simple strong-typed programming language (tiny). The language is defined below:
 # 
-#       <prog> ::= <let-in-end> { <let-in-end> }
+# <prog> ::= <let-in-end> { <let-in-end> }
 # <let-in-end> ::= let <decl-list> in <type> ( <expr> ) end ;
-#  <decl-list> ::= <decl> { <decl> }
-#       <decl> ::= id : <type> = <expr> ;
-#       <type> ::= int | real
-#       <expr> ::= <term> { + <term> | - <term> }
-#       <term> ::= <factor> { * <factor> | / <factor> }
-#     <factor> ::= <base> ^ <factor> | <base>
-#       <base> ::= ( <expr> ) | id | number | <type> ( id )
+# <decl-list> ::= <decl> { <decl> }
+# <decl> ::= id : <type> = <expr> ;
+# <type> ::= int | real
+# <expr> ::= <term> { + <term> | - <term> }
+# <term> ::= <factor> { * <factor> | / <factor> }
+# <factor> ::= <base> ^ <factor> | <base>
+# <base> ::= ( <expr> ) | id | number | <type> ( id )
 
 
 

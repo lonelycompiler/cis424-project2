@@ -57,7 +57,7 @@ def LET_IN_END():
     match('let')
     DECL_LIST()
     match('in')
-    type = TYPE()
+    typ = TYPE()
     match('(')
     value = EXPR()
     match(')')
@@ -85,6 +85,7 @@ def DECL():
     match(':')
     typ = TYPE()
     v = EXPR()
+    match(';')
     symbol_table[id] = v
     
   

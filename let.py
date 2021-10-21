@@ -45,10 +45,8 @@ def match(ch):
 def PROG():
     global lookahead
     LET_IN_END()
-    match('{')
     while (lookahead == 'let'):
         LET_IN_END()
-    match('}')
     
 
 def LET_IN_END():
@@ -64,8 +62,12 @@ def LET_IN_END():
     match(';')
     symbol_table = {} #clear symbol_table at end of program
 
-    
-   
+
+def DECL_LIST():
+    global lookahead
+    DECL()
+    while (lookahead == ''):
+        DECL()
 
 
     

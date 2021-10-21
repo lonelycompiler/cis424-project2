@@ -1,4 +1,0 @@
-let x : int = 5 ;
-in
-    int ( x + x * x )
-end ;

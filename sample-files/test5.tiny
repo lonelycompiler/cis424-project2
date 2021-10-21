@@ -1,9 +1,0 @@
-
-int x , y = 2 , 3.3 ; 
-
-let 
-    int z = x * y ;
-in
-    real ( z + z )
-end ; 
-

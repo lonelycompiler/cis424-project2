@@ -141,7 +141,7 @@ def TERM():
             symbol /= FACTOR()
     return v
     
-
+# FACTOR function checks 
 def FACTOR():
     v = BASE()
     if lookahead == '^':
@@ -151,7 +151,11 @@ def FACTOR():
     return v
         
 
-# type checking must be done to ensure lookahead is expr_type
+# The BASE function will recursively call 
+# expr or type until an id from the symbol table or
+# a valid int/real number is given.
+# like so:
+# <base> ::= ( <expr> ) | id | number | <type> ( id )
 def BASE():
     #v = 0
     # ( <expr> )
@@ -172,18 +176,16 @@ def BASE():
     elif lookahead == "int":
             TYPE()
             match('(')
-            id = int(lookahead)
+            v = int(lookahead)
             match(')')
-            v = id
     
     elif lookahead == "real":
             typ = TYPE(lookahead)
             match('(')
 
-            if ( lookahead[0].isalpha()): 
-                id = int(BASE())
+            v = int(BASE())
+            
             match(')')
-            v = id
     
     # id
     elif lookahead[0].isalpha():
@@ -198,6 +200,9 @@ def BASE():
     return v
 
 
+# this function reads an input file (sys.argv[1] must be given)
+# it then puts the input into an iterable list which the tiny
+# compiler runs on
 def main():
     global mitr
     global lookahead
@@ -215,13 +220,16 @@ def main():
     # open the file
     with open(sys.argv[1], 'r+') as f:
 
-        # create a list, then iterate over that list
+        # create a list from the file, then iterate over that list
         wlist = f.read().split()
         mitr = iter(wlist)
         lookahead = next(mitr)
+
+        # start the program
         PROG()
         
         #print the result by taking the list into a string
         print('\n'.join(result))
+
 
 main()

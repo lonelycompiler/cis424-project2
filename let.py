@@ -94,7 +94,7 @@ def DECL():
 def TYPE(v):
     if isinstance(v, int):
         return "int" 
-    elif isinstance(v, real):
+    elif isinstance(v, float):
         return "real"
     else:
         print("Type Error")
@@ -156,8 +156,8 @@ def BASE():
                     print('Error')
                     exit()
                 else: return v
-            elif expr_type == 'real':
-                if(isinstance(v, real) == False):
+            elif typ == 'real':
+                if(isinstance(v, float) == False):
                     print('Error')
                     exit()
                 else: return v

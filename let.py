@@ -21,13 +21,16 @@
 #
 # terminal characters are space delimited and the input file name is given from cmd
 
-# #!/usr/bin/python3
+#!/usr/bin/python3
 # chmod +x let.py
 # do not use eval() function!!
 
 
 import sys
-
+import snoop
+# NEED TO IMPLEMENT:
+# functions: TERM(expr_type) TYPE() FACTOR() DECLR_LIST()
+# clear dict after matching ;
 def lexan():
     global mitr
     try:
@@ -35,6 +38,7 @@ def lexan():
     except StopIteration:
         return ''
 
+@snoop(watch='lookahead', depth=2)
 def match(ch):
     global lookahead
     if(ch == lookahead):
@@ -43,6 +47,7 @@ def match(ch):
         print('Error')
         exit()
 
+@snoop(watch='lookahead', depth=2)
 def PROG():
     global lookahead
     symbol_table = {} #clear symbol_table at end of program
@@ -52,13 +57,16 @@ def PROG():
         LET_IN_END()
     
 
+@snoop(watch='lookahead', depth=2)
 def LET_IN_END():
     global lookahead
     global symbol_table
     match('let')
     DECL_LIST()
     match('in')
-    typ = TYPE()
+
+    typ = TYPE(lookahead)
+
     match('(')
     value = EXPR()
     match(')')
@@ -68,6 +76,7 @@ def LET_IN_END():
 
 
 
+@snoop(watch='lookahead', depth=2)
 def DECL_LIST():
     global lookahead
     DECL()
@@ -77,57 +86,93 @@ def DECL_LIST():
 
     
 
-    
-def DECL():
+@snoop(watch='lookahead', depth=3)
+def DECL(): # x : int = 5
     global lookahead
     global symbol_table
     global typ
+
+    # non-terminal id
     id = lookahead
-    match(lookahead)
+    match(id)
+
+    # terminal ':'
     match(':')
-    temp = lookahead
-    match(lookahead)
-    match('=')
+
+    # non-terminal type so 'int' or 'real'
     typ = TYPE(lookahead)
-    if typ is not temp:
-        print('Error')
-        exit()
+
+    # terminal '='
+    match('=')
+
+    # non-terminal <expr> which uses id
     v = EXPR()
     match(';')
     symbol_table[id] = v
     
   
-    
-def TYPE(v):
-    if isinstance(v, int):
-        return "int" 
-    elif isinstance(v, float):
-        return "real"
+@snoop(watch='lookahead', depth=2)
+def TYPE(typ):
+    if typ == 'real':
+        match('real')
+        return 'real'
+
+    elif typ == 'int':
+        match('int')
+        return 'int'
+
     else:
-        print("Type Error")
+        print('Error')
         exit()
+    """
+    try:
+        if '.' in v:
+            v = float(v)
+            return 'real'
+        else:
+            try:
+                v = int(v)
+                return 'int'
+            except:
+                print('Error')
+                exit()
+    except:
+        try:
+            v = int(v)
+            return 'int'
+        except:
+            print('Error')
+            exit()
+    """
     
     
 
 def EXPR():
-    v = TERM(typ)
+    global lookahead
+    #print(lookahead)
+    v = TERM()
+    #print(v)
     while lookahead == '+' or lookahead == '-':
         if lookahead == '+':
             match('+')
-            v += TERM(typ)
+            v += TERM()
         else:
             match('-')
-            v -= TERM(typ)
+            v -= TERM()
     return v
         
         
 def TERM():
+    match(lookahead)
     FACTOR()
     while lookahead == '*' or lookahead == '/':
+        match(lookahead)
         FACTOR()
     
     
+@snoop(watch='lookahead', depth=2)
 def FACTOR():
+    #print(lookahead)
     BASE()
     if lookahead == '^':
         match('^')
@@ -135,16 +180,22 @@ def FACTOR():
     else: pass
         
 
-# type checking must be done to ensure lookahead is typ
+# type checking must be done to ensure lookahead is expr_type
+
+@snoop(watch='lookahead', depth=2)
 def BASE():
+    # ( <expr> )
     if lookahead == '(':
         match('(')
         EXPR()
         match(')')
-
+    
+    # id
     elif lookahead[0].isalpha():
         if lookahead in symbol_table:
-            v = symbol_table[lookahead]
+            v = symbol_table[lookahead] # gets the value from the id
+            
+            """
             if typ == 'int':
                 if isinstance(v, int) == False:
                     print('Error')
@@ -155,20 +206,30 @@ def BASE():
                     print('Error')
                     exit()
                 else: return v
-            else: print("Error") # If the typ is not int or real    
+            else:
+                print("Error") # If the expr_type is not int or real
+                exit()
+            """
 
-    #first character of lookahead            
+    # number -- real
+    elif lookahead[0].isdigit and '.' in lookahead:
+        v = float(lookahead)
+          
     elif lookahead[0].isdigit():
         v = int(lookahead)
 
-    elif '.' in lookahead:
-        v = float(lookahead)
-
-    elif lookahead == "int" or lookahead == "real":
+    # # <type> id
+    elif lookahead == "int":
             TYPE()
             match('(')
-            id = lookahead
+            v = int(lookahead)
             match(')')
+    elif lookahead == "real":
+            TYPE()
+            match('(')
+            id = int(lookahead)
+            match(')')
+            v = id
 
     match(lookahead)
     return v
@@ -187,6 +248,7 @@ def BASE():
     
     
 
+@snoop(watch='lookahead', depth=2)
 def main():
     global mitr
     global lookahead
@@ -194,7 +256,7 @@ def main():
     symbol_table = {}
 
     # if a file argument isn't given, then return error
-    if(len(sys.argv) == 1 or len(sys.argv) >= 3):
+    if(len(sys.argv) == 1 or len(sys.argv) > 2):
         print('Error')
         exit()
     
@@ -209,6 +271,7 @@ def main():
         if(lookahead == ''):
             print('pass')
         else:
+            print('hi')
             print('Error')
 
 main()

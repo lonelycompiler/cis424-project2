@@ -1,0 +1,10 @@
+real pi = 3.14 ;
+
+let int x = 7 ; 
+in int ( x ) 
+end ;
+
+let real r = 10.0  ; 
+in real ( pi * r * r ) 
+end ;
+

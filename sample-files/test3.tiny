@@ -1,0 +1,12 @@
+
+real x , y , z = 12.34 , 3.0 , 7.0 ;
+
+let real x = 5.0 ;
+in real ( x + y * 7.0 - 34.4 / 2.0 ) 
+end ;
+
+let 
+   int w , x = 9 , 5 ;  
+in real ( ( ( ( real ( w ) * 3.0 ) / y - 4.0 ) / real ( x ) ) / ( 8.0 - z ) )
+end ;
+

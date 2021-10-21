@@ -1,0 +1,15 @@
+
+real m , n = 4.0 , 3.0 ;
+
+let 
+    real x , y , z = m + n , m - n , m * n ;
+in
+    real ( x * y + z )
+end ;
+
+let 
+    real y = 3.0 ;
+in 
+    real ( m ++ y * 7.0 ) 
+end ;
+

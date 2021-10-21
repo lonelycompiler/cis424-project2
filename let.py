@@ -20,6 +20,9 @@
 # <base> ::= ( <expr> ) | id | number | <type> ( id )
 # terminal characters are space delimited and the input file name is given from cmd.
 
+# #!/usr/bin/python3
+# chmod +x let.py
+
 import sys
 # NEED TO IMPLEMENT:
 # functions: TERM(expr_type) TYPE() FACTOR() DECLR_LIST()
@@ -42,8 +45,11 @@ def match(ch):
 def PROG():
     global lookahead
     LET_IN_END()
+    match('{')
     while (lookahead == 'let'):
         LET_IN_END()
+    match('}')
+    
 
 def LET_IN_END():
     global lookahead
@@ -61,6 +67,7 @@ def LET_IN_END():
     
     
 def DECL_LIST():
+    global lookahead
     DECL()
     match('{')
     DECL()

@@ -70,7 +70,7 @@ def LET_IN_END():
 def DECL_LIST():
     global lookahead
     DECL()
-    while (lookahead is not 'in'):
+    while (lookahead == ''):
         DECL()
 
 
@@ -120,23 +120,54 @@ def TERM():
     
     
 def FACTOR():
-            
-
+    BASE()
+    if lookahead == '^':
+        match('^')
+        FACTOR()
+    else: pass
+        
 
 # type checking must be done to ensure lookahead is expr_type
 def BASE():
     #first character of lookahead
-    if (lookahead[0].isalpha()):
+    if lookahead == '(':
+        match('(')
+        EXPR()
+        match(')')
+
+    elif (lookahead[0].isdigit()):
+        v = int(lookahead)
+
+    elif ('.' in lookahead):
+        v = float(lookahead)
+
+    elif:
+        if lookahead == "int" or lookahead == "real":
+            TYPE()
+            match('(')
+            id = lookahead
+            match(')')
+        
+    elif (lookahead[0].isalpha()):
         if(lookahead in symbol_table):
             v = symbol_table[lookahead]
             if (expr_type == 'int'):
-                if(isinstance(v,int) == False):
-                    print('Type not matched!')
+                if(isinstance(v, int) == False):
+                    print('Error')
                     exit()
-    elif (lookahead[0].isdigit()):
-        v = int(lookahead)
-    elif ('.' in lookahead):
-        v = float(lookahead)
+                else: return v
+            elif (expr_type == 'real'):
+                if(isinstance(v, real) == False):
+                    print('Error')
+                    exit()
+                else: return v
+            else: print("Error") # If the expr_type is not int or real            
+
+
+                    
+    
+    
+    
     
     match(lookahead)
     return v
